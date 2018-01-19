@@ -1,7 +1,5 @@
 from collections import defaultdict
-from importlib.machinery import SourceFileLoader
-#foo = SourceFileLoader("Record", "/Users/redfox/IdeaProjects/getYourGuide/de_code_challenge-a/Record.py").load_module()
-#foo.Record()
+
 
 class Record(object):
     def create(self,review_id, datee="", message=""):
@@ -17,45 +15,60 @@ class DB(object):
 
         self.wordDict = defaultdict(list)
         self.recordsDict = defaultdict(Record)
-        self.entries = [] if entries is None else entries
+        if entries is not None:
+            self.add_fromList(entries)
 
+    def add_fromList(self, entries):
+        for e in entries:
+            self.add(e)
 
-    def get_record_dict(self):
-        return self.recordsDict
+    def get_record_dict(self, id):
+        return self.recordsDict[id]
+
     def search(self, query_string):
         """
         >>> DB([(1, "", "tour city",), (2, "", "some other",)]).search("city tour")
         [(1, '', 'tour city')]
         """
         terms = query_string.split()
-        print("searching {0}".format(terms))
-        result = []
-        print(len(self.entries))
+        result = set()
 
-        for e in self.entries:
-            target = len(terms)
-            for t in terms:
-                if t in e[2]:
-                    target -= 1
-            if target == 0:
-                result.append(e)
-        print("result {0}".format(result))
-        return result
+        for t in terms:
+            records_containing_t = self.wordDict[t]
+
+            for id in records_containing_t:
+                r = self.get_record_dict(id)
+                result.add((r.review_id, r.datee, r.message))
+
+        return list(result)
+
+        #for e in self.entries:
+        #    target = len(terms)
+        #    for t in terms:
+        #        if t in e[2]:
+        #            target -= 1
+        #    if target == 0:
+        #        result.append(e)
+        #print("result {0}".format(result))
 
     def add(self, entry):
         """
-        >>> entry[0] == ""
-        False
+        Test to check if everything has been indexed correctly
+        >>> DB([(1, "", "tour city",), (2, "", "some other",)]).recordsStoredCount()
+        2
+        >>> DB([(1, "", "tour city",), (2, "", "some other",)]).indexedWordsCount()
+        4
         """
-        #self.entries.append(entry)
         "An entry is a tuple of (id, datatime, text)."
         id = entry[0]
         datee = entry[1]
         text = entry[2]
         self.recordsDict[id].create(id, datee, text)
-        #for word in text.split():
-        #    self.wordDict[word] += [id]
+        for word in text.split():
+            self.wordDict[word] += [id]
 
-    def search(self,key_words):
-        print(key_words)
-        return ["hola","que tal"]
+    def indexedWordsCount(self):
+        return len(self.wordDict)
+
+    def recordsStoredCount(self):
+        return len(self.recordsDict)

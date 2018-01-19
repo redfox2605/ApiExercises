@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from tornado.web import Application, RequestHandler
 from tornado.ioloop import IOLoop
-from DB import *
+from DB import DB
 def main():
     import logging
     db = initdb()
@@ -16,8 +16,9 @@ def main():
 
 def initdb(filename="data.json"):
     import json
+
     db = DB()
-    with open(filename, "r") as f:
+    with open(filename, "r", encoding='utf-8-sig') as f:
         for l in f:
             q_dict = json.loads(l)
             for e in q_dict["data"]:
@@ -27,13 +28,10 @@ def initdb(filename="data.json"):
 class SearchHandler(RequestHandler):
     def initialize(self, db):
         self.db = db
-    def get(self, query_string):
 
+    def get(self, query_string):
         r = self.db.search(query_string)
-        self.write(dict(
-            size = len(r),
-            entries = r
-        ))
+        self.write(dict(size=len(r), entries=r))
 
 if __name__ == "__main__":
     main()
