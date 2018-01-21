@@ -3,4 +3,4 @@ loadtest:
 test:
 	python -m doctest -v app.py DB.py
 run:
-	./app.py
+	./japrontoRun.py
