@@ -197,4 +197,3 @@ http://localhost:8888/s/bien
 http://localhost:8888/s/Rome
 http://localhost:8888/s/ok%20Paris
 http://localhost:8888/s/experienced
-http://localhost:8888/s/Rome%20excellent%20quality

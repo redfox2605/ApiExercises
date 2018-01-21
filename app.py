@@ -30,6 +30,7 @@ class SearchHandler(RequestHandler):
         self.db = db
 
     def get(self, query_string):
+
         r = self.db.search(query_string)
         self.write(dict(size=len(r), entries=r))
 

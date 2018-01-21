@@ -31,6 +31,7 @@ class DB(object):
         [(1, '', 'tour city')]
         """
         terms = query_string.split()
+
         result = set()
 
         for t in terms:
