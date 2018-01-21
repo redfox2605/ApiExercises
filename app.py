@@ -35,5 +35,6 @@ class SearchHandler(RequestHandler):
         r = self.db.search(query_string)
         self.write(dict(size=len(r), entries=r))
 
+
 if __name__ == "__main__":
     main()
