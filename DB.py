@@ -46,17 +46,6 @@ class DB(object):
                 result = result.intersection(records_containing_t)
             return [self.get_record_dict(id).getTuple() for id in result]
 
-
-
-        #for e in self.entries:
-        #    target = len(terms)
-        #    for t in terms:
-        #        if t in e[2]:
-        #            target -= 1
-        #    if target == 0:
-        #        result.append(e)
-        #print("result {0}".format(result))
-
     def add(self, entry):
         """
         Test to check if everything has been indexed correctly
