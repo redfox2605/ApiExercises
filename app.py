@@ -23,6 +23,7 @@ def initdb(filename="data.json"):
             q_dict = json.loads(l)
             for e in q_dict["data"]:
                 db.add((e['review_id'], e['date'], e['message']))
+    #db.printWordDict()
     return db
 
 class SearchHandler(RequestHandler):
